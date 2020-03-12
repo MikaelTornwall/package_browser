@@ -3,19 +3,55 @@ const parseToBlocks = (data) => {
     return data
 }
 
-const parseToObject = (blocks) => {
+const initializeObject = (blocks) => {
   const obj = new Object()
 
   for (block of blocks) {
-    block = block.split('\n')
+    if (!block.trim()) continue;
 
-    for (line of block) {
-      if (line.startsWith('Package:')) {
-        line = line.replace('Package: ', '')
-        obj[line] = {}
-      }
+    block = block.split('\n')
+    let package = block[0].replace('Package: ', '')
+    package = package.trim().toString()
+
+    obj[package] = {
+      name: package,
+      dependencies: [],
+      dependents: []
     }
   }
+  return obj
+}
+
+const parseToObject = (blocks) => {
+  const obj = initializeObject(blocks)
+
+  // for (block of blocks) {
+  //
+  //   if (!block.trim()) continue;
+  //
+  //   block = block.split('\n')
+  //   let package = block[0].replace('Package: ', '')
+  //   package = package.trim().toString()
+  //
+  //   obj[package] = {
+  //     name: package,
+  //     dependencies: [],
+  //     dependents: []
+  //   }
+  //
+  //   for (let i = 1; i < block.length; i++) {
+  //     line = block[i]
+  //
+  //     if (line.startsWith('Depends: ')) {
+  //       line = line.split(',')
+  //       for (dep of line) {
+  //
+  //       }
+  //     }
+  //   }
+  //
+  //
+  // }
   console.log(obj)
 }
 
