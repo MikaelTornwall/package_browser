@@ -63,7 +63,7 @@ const parseToObject = (blocks) => {
         obj[package].description += line
       }
     })
-  })  
+  })
   return obj
 }
 

@@ -1,7 +1,7 @@
 const express =         require('express')
 const app =             express()
-const fileReader =      require('./readFile')
-const parser =          require('./parser')
+const fileReader =      require('./utils/readFile')
+const parser =          require('./utils/parser')
 const packageRouter =   require('./controllers/packages')
 
 const init = async () => {
