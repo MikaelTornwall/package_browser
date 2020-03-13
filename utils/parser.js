@@ -20,7 +20,7 @@ const extractDependencies = (line) => {
     .replace(re3, '')
     .split(',')
     .map(d => d.trim())
-  return line
+  return [... new Set(line)]
 }
 
 const extractDescription = (line) => {
