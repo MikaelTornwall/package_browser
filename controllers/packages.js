@@ -1,16 +1,22 @@
-const packageRouter =   require('express').Router()
-const fileReader =      require('../utils/readFile')
-const parser =          require('../utils/parser')
+const packageRouter =     require('express').Router()
+const packagesService =   require('../services/packagesService')
 
-packageRouter.get('/:id', async (req, res) => {
+packageRouter.get('/', (req, res) => {
   try {
-    const res = await fileReader.readFile('../status')
-    const blocks = await parser.parseToBlocks(res)
-    const obj = await parser.parseToObject(blocks)
-    console.log(obj)
-    res
+    const packages = packagesService.getPackages()
+    res.send(packages)
   } catch(err) {
-    throw err
+    console.log(err)
+  }
+})
+
+packageRouter.get('/:name', (req, res) => {
+  try {
+    const name = req.params.name
+    const package = packagesService.getByName(name)    
+    res.send(package)
+  } catch(err) {
+    console.log(err)
   }
 })
 
