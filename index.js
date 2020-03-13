@@ -1,21 +1,22 @@
-const http =            require('http')
+const express =         require('express')
+const app =             express()
 const fileReader =      require('./readFile')
 const parser =          require('./parser')
+const packageRouter =   require('./controllers/packages')
 
 const init = async () => {
   const res = await fileReader.readFile('status')
   const blocks = await parser.parseToBlocks(res)
   const obj = await parser.parseToObject(blocks)
+  console.log(obj)
   return res
 }
 
 init()
 
-const app = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' })
-    res.end('Hello, World')
-})
+app.use('/api/packages', packageRouter)
 
-const port = 3001
-app.listen(port)
-console.log(`Server running on port ${port}`)
+const PORT = 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
