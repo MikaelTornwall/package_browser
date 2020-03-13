@@ -1,67 +1,70 @@
 const parseToBlocks = (data) => {
     data = data.split('\n\n')
+    data.pop()
     return data
+}
+
+const extractPackage = (line) => {
+  const key = 'Package: '
+  let package = line.replace(key, '')
+  package = package.trim()
+  return package
+}
+
+const extractDependencies = (line) => {
+  const re1 = 'Depends: '
+  const re2 = /\((.*?)\)/g
+  const re3 = /\|(.*)/g
+  line = line.replace(re1, '')
+    .replace(re2, '')
+    .replace(re3, '')
+    .split(',')
+    .map(d => d.trim())
+  return line
+}
+
+const extractDescription = (line) => {
+  const re = 'Description: '
+  line = line.replace(re, '')
+  return line
 }
 
 const initializeObject = (blocks) => {
   const obj = new Object()
+  let index = 1
 
-  for (block of blocks) {
-    if (!block.trim()) continue;
-
+  blocks.forEach(block => {
     block = block.split('\n')
-    let package = block[0].replace('Package: ', '')
-    package = package.trim().toString()
+    const package = extractPackage(block[0])
+    obj[package] = { index: index++, name: package, description: '', dependencies: [], dependents: [] }
+  })
 
-    obj[package] = {
-      name: package,
-      dependencies: [],
-      dependents: []
-    }
-  }
   return obj
 }
 
 const parseToObject = (blocks) => {
   const obj = initializeObject(blocks)
+  const keys = ['Depends: ', 'Description: ', ' ']
 
-  // for (block of blocks) {
-  //
-  //   if (!block.trim()) continue;
-  //
-  //   block = block.split('\n')
-  //   let package = block[0].replace('Package: ', '')
-  //   package = package.trim().toString()
-  //
-  //   obj[package] = {
-  //     name: package,
-  //     dependencies: [],
-  //     dependents: []
-  //   }
-  //
-  //   for (let i = 1; i < block.length; i++) {
-  //     line = block[i]
-  //
-  //     if (line.startsWith('Depends: ')) {
-  //       line = line.split(',')
-  //       for (dep of line) {
-  //
-  //       }
-  //     }
-  //   }
-  //
-  //
-  // }
-  console.log(obj)
+  blocks.forEach(block => {
+    block = block.split('\n')
+    const package = extractPackage(block[0])
+    block.map(line => {
+      if (line.startsWith(keys[0])) {
+        line = extractDependencies(line)
+        obj[package].dependencies = line
+        line.forEach(dependency => {
+          if (!obj[dependency]) return
+          obj[dependency].dependents.push(package)
+        })
+      } else if (line.startsWith(keys[1])) {
+        obj[package].description = extractDescription(line)
+      } else if (line.startsWith(keys[2])) {
+        obj[package].description += line
+      }
+    })
+  })  
+  return obj
 }
 
-const parse = (line) => {
-  if (line.startsWith('Package:')) {
-    line = line.split(':')
-    // console.log(line[1].trim())
-    package = line[1]
-    obj.line[1] = {}
-  }
-}
-
-module.exports = { parse, parseToBlocks, parseToObject }
+module.exports = { parseToBlocks, parseToObject }

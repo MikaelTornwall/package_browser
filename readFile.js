@@ -2,56 +2,31 @@ const fs =          require('fs')
 const readline =    require('readline')
 const parser =      require('./parser')
 
-const readFile = (filePath) => {
+const checkLine = (line) => {
+  const keys = ['Package: ', 'Depends: ', 'Description: ', ' ']
+  if (line.startsWith(keys[0]) || line.startsWith(keys[1]) || line.startsWith(keys[2])
+  || line.startsWith(keys[3]) || line.length == 0) return true
+
+  return false
+}
+
+const readFile = (path) => {
   return new Promise((res, rej) => {
     try {
-      fs.readFile(filePath, 'utf8', (err, data) => {
-          if (err) throw err
-          return res(data)
+      let text = ''
+      const readInterface = readline.createInterface({
+        input: fs.createReadStream(path),
+        terminal: false
       })
-    } catch(err) {
+      readInterface.on('line', function(line) {
+        if (checkLine(line)) text += line + '\n'
+      }).on('close', function() {
+        res(text)
+      })
+    } catch (err) {
       rej(err)
     }
   })
 }
-
-// const readFile = (path) => {
-//   return new Promise((res, rej) => {
-//     try {
-//       let text = ''
-//       const readInterface = readline.createInterface({
-//         input: fs.createReadStream(path),
-//         terminal: false
-//       })
-//
-//       readInterface.on('line', function(line) {
-//         line = line.trim()
-//         parser.parse(line)
-//         text += line + "\n"
-//       }).on('close', function() {
-//         const obj = parser.getObj()
-//         res(obj)
-//       })
-//     } catch (err) {
-//       rej(err)
-//     }
-//   })
-// }
-//
-// const blockData = (data) => {
-//   obj = {}
-//   dataArray = data.toString().split('\n\n')
-//   console.log(dataArray[0])
-//   // dataArray.map(line => console.log(line + '\n'))
-// }
-
-// One option
-
-// const readFile = (filePath) => {
-//   fs.readFile(filePath, 'utf8', (err, data) => {
-//       if (err) throw err
-//
-//   })
-// }
 
 module.exports = { readFile }

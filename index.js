@@ -5,7 +5,7 @@ const parser =          require('./parser')
 const init = async () => {
   const res = await fileReader.readFile('status')
   const blocks = await parser.parseToBlocks(res)
-  const parseToObjects = await parser.parseToObject(blocks)
+  const obj = await parser.parseToObject(blocks)
   return res
 }
 
