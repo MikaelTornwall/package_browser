@@ -7,6 +7,7 @@ const packageService =    require('./services/packagesService')
 packageService.initPackages()
 
 app.use(cors())
+app.use(express.static('build'))
 app.use('/api/packages', packageRouter)
 
 const PORT = process.env.PORT || 3001
