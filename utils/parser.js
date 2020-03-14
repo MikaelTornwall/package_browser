@@ -15,12 +15,14 @@ const extractDependencies = (line, obj) => {
   const re1 = 'Depends: '
   const re2 = /\((.*?)\)/g
   const re3 = /\|(.*)/g
-  line = line.replace(re1, '')
-    .replace(re2, '')
-    .replace(re3, '')
+  line = line
+    .replace(re1, '')
     .split(',')
-    .map(d => d.trim())
-    .filter(d => obj[d])
+    .map(dependency => dependency
+      .replace(re2, '')
+      .replace(re3, '')
+      .trim())
+    .filter(dependency => obj[dependency])
   line = [... new Set(line)]
   return line
 }
