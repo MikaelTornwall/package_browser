@@ -22,9 +22,11 @@ const extractDependencies = (line, obj) => {
       .replace(re2, '')
       .replace(re3, '')
       .trim())
-    .filter(dependency => obj[dependency])
   line = [... new Set(line)]
-  return line
+  dependencies = []
+  dependencies.push(line.filter(dependency => obj[dependency]))
+  dependencies.push(line.filter(dependency => !obj[dependency]))
+  return dependencies
 }
 
 const extractDescription = (line) => {
@@ -34,7 +36,7 @@ const extractDescription = (line) => {
 }
 
 const initializeObject = (blocks) => {
-  const obj = new Object()
+  const obj = {}
   let index = 1
 
   blocks.forEach(block => {
@@ -44,7 +46,7 @@ const initializeObject = (blocks) => {
       index: index++,
       name: package,
       description: '',
-      dependencies: [],
+      dependencies: [[], []],
       dependents: []
     }
   })
@@ -60,10 +62,9 @@ const parseToObject = (blocks) => {
     const package = extractPackage(block[0])
     block.map(line => {
       if (line.startsWith(keys[0])) {
-        line = extractDependencies(line, obj)
+        line = extractDependencies(line, obj)        
         obj[package].dependencies = line
-        line.forEach(dependency => {
-          if (!obj[dependency]) return
+        line[0].forEach(dependency => {
           obj[dependency].dependents.push(package)
         })
       } else if (line.startsWith(keys[1])) {

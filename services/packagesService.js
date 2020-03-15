@@ -3,7 +3,7 @@ const parser =          require('../utils/parser')
 
 let packages = null
 let keys = null
-let path = './status'
+let path = './var/lib/dpkg/status'
 
 const initPackages = async () => {
   if (!packages || !keys) {
