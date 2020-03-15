@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",
+    "build:ui": "rm -rf build && cd ../reaktor-summer-client && npm run build --prod && cp -r build ../reaktor-summer/",
+    "deploy": "git push heroku master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mikael Törnwall",

@@ -48,7 +48,6 @@ const initializeObject = (blocks) => {
       dependents: []
     }
   })
-
   return obj
 }
 
