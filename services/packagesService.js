@@ -6,12 +6,16 @@ let keys = null
 let path = './var/lib/dpkg/status'
 
 const initPackages = async () => {
-  if (!packages || !keys) {
-    const res = await fileReader.readFile(path)
-    const blocks = await parser.parseToBlocks(res)
-    packages = await parser.parseToObject(blocks)
-    keys = Object.keys(packages)
-    keys.sort()
+  try {
+    if (!packages || !keys) {
+      const res = await fileReader.readFile(path)
+      const blocks = await parser.parseToBlocks(res)
+      packages = await parser.parseToObject(blocks)
+      keys = Object.keys(packages)
+      keys.sort()
+    }
+  } catch(err) {
+    console.log(err)
   }
 }
 
