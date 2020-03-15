@@ -1,5 +1,6 @@
 const fileReader =      require('../utils/readFile')
 const parser =          require('../utils/parser')
+const logger =          require('../utils/logger')
 
 let packages = null
 let keys = null
@@ -15,7 +16,7 @@ const initPackages = async () => {
       keys.sort()
     }
   } catch(err) {
-    console.log(err)
+    logger.error(err)
   }
 }
 

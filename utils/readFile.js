@@ -6,7 +6,7 @@ const checkLine = (line) => {
   const keys = ['Package: ', 'Depends: ', 'Description: ', ' ']
   if (line.startsWith(keys[0]) || line.startsWith(keys[1]) || line.startsWith(keys[2])
   || line.startsWith(keys[3]) || line.length == 0) return true
-
+  
   return false
 }
 

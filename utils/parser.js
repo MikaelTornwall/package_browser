@@ -12,6 +12,7 @@ const extractPackage = (line) => {
 }
 
 const extractDependencies = (line, obj) => {
+  const dependencies = []
   const re1 = 'Depends: '
   const re2 = /\((.*?)\)/g
   const re3 = /\|(.*)/g
@@ -23,7 +24,6 @@ const extractDependencies = (line, obj) => {
       .replace(re3, '')
       .trim())
   line = [... new Set(line)]
-  dependencies = []
   dependencies.push(line.filter(dependency => obj[dependency]))
   dependencies.push(line.filter(dependency => !obj[dependency]))
   return dependencies
@@ -62,7 +62,7 @@ const parseToObject = (blocks) => {
     const package = extractPackage(block[0])
     block.map(line => {
       if (line.startsWith(keys[0])) {
-        line = extractDependencies(line, obj)        
+        line = extractDependencies(line, obj)
         obj[package].dependencies = line
         line[0].forEach(dependency => {
           obj[dependency].dependents.push(package)

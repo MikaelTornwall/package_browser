@@ -1,20 +1,25 @@
 # Reaktor Summer 2020 Pre-assignment
 
-Live demo at [_placeholder_](https://github.com/MikaelTornwall/package-browser)
+Live Heroku demo can be found [here](http://pre-assignment-reaktor-2020.herokuapp.com/)
 
 ## Description
 
-Package browser that presents the contents of `var/lib/dpkg/status` file on Debian and Ubuntu systems, or contents of a mock file on the demo app, and let's you view each package description, dependencies of the package and the reverse dependencies of the package. The browser let's you also navigate the packages through dependencies and reverse dependencies
+The package browser application presents the contents of `var/lib/dpkg/status` (mock)file, and let's you view each package's name, description, dependencies of the package and the reverse dependencies of the package. The browser let's you also navigate the packages through dependencies and reverse dependencies
 
-See the detailed description [here](https://www.reaktor.com/junior-dev-assignment/)
+See the detailed task description [here](https://www.reaktor.com/junior-dev-assignment/)
 
 ## How to run locally
-
-### Run locally
 
 - Clone repository
 - `npm install`
 - `npm start`
+- Open `localhost:3001` in your browser
+
+## Technologies used
+
+- Node.js
+- Express.js
+- React.js
 
 ## Contributors
 
