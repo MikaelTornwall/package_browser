@@ -10,8 +10,7 @@ const initPackages = async () => {
   try {
     if (!packages || !keys) {
       const res = await fileReader.readFile(path)
-      const blocks = await parser.parseToBlocks(res)
-      packages = await parser.parseToObject(blocks)
+      packages = await parser.parseToObject(res)
       keys = Object.keys(packages)
       keys.sort()
     }

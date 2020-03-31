@@ -13,15 +13,15 @@ const extractPackage = (line) => {
 
 const extractDependencies = (line, obj) => {
   const dependencies = []
-  const re1 = 'Depends: '
-  const re2 = /\((.*?)\)/g
-  const re3 = /\|(.*)/g
+  const matchDepends = 'Depends: '
+  const matchBrackets = /\((.*?)\)/g
+  const matchPipe = /\|(.*)/g
   line = line
-    .replace(re1, '')
+    .replace(matchDepends, '')
     .split(',')
     .map(dependency => dependency
-      .replace(re2, '')
-      .replace(re3, '')
+      .replace(matchBrackets, '')
+      .replace(matchPipe, '')
       .trim())
   line = [... new Set(line)]
   dependencies.push(line.filter(dependency => obj[dependency]))
@@ -53,7 +53,8 @@ const initializeObject = (blocks) => {
   return obj
 }
 
-const parseToObject = (blocks) => {
+const parseToObject = (res) => {
+  const blocks = parseToBlocks(res)
   const obj = initializeObject(blocks)
   const keys = ['Depends: ', 'Description: ', ' ']
 
